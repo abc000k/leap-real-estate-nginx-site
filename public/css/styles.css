@@ -456,10 +456,17 @@ h3 {
   color: rgba(255, 255, 255, 0.75);
 }
 
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .signal {
   min-height: 9rem;
-  display: flex;
-  align-items: center;
+  display: grid;
+  align-content: center;
+  gap: 0.65rem;
   padding: 1.4rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius);
@@ -467,8 +474,18 @@ h3 {
     linear-gradient(135deg, rgba(236, 63, 157, 0.2), rgba(85, 198, 170, 0.13)),
     rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  font-size: 1.18rem;
+}
+
+.signal span {
+  color: #ffb0d7;
+  font-size: 0.78rem;
   font-weight: 800;
+  text-transform: uppercase;
+}
+
+.signal strong {
+  font-size: 1.08rem;
+  line-height: 1.45;
 }
 
 .person-card {
@@ -617,7 +634,8 @@ address a {
   }
 
   .service-grid,
-  .team-grid {
+  .team-grid,
+  .signal-grid {
     grid-template-columns: 1fr;
   }
 }
