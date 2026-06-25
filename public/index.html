@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="立璞房产咨询有限公司为商业地产、资本市场与办公空间提供国际化咨询服务。">
+  <title>立璞房产咨询有限公司 | LEAP Real Estate Advisory</title>
+  <link rel="preload" href="assets/leap-district.webp" as="image">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="立璞房产咨询有限公司首页">
+      <span class="brand-mark">L</span>
+      <span>
+        <strong>LEAP 立璞</strong>
+        <small>Real Estate Advisory</small>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="#services">服务</a>
+      <a href="#insights">数据</a>
+      <a href="#team">团队</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换明暗主题" aria-pressed="false">
+      <span aria-hidden="true" data-theme-icon>☾</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" aria-hidden="true">
+        <img src="assets/leap-district.webp" alt="">
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Commercial Real Estate Strategy</p>
+        <h1 id="hero-title"><span>立璞房产咨询</span><span>有限公司</span></h1>
+        <p class="hero-slogan" id="slogan-typewriter" data-text="以粉色增长曲线，重塑城市资产价值。"></p>
+        <p class="hero-copy">我们将城市研究、资本洞察与空间运营整合为可执行的资产策略，帮助业主、投资人与企业用户找到下一段增长。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#contact">预约顾问</a>
+          <a class="button secondary" href="#services">查看服务</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="业务指标">
+        <div>
+          <strong>32+</strong>
+          <span>重点城市研究样本</span>
+        </div>
+        <div>
+          <strong>98%</strong>
+          <span>项目建议按期交付</span>
+        </div>
+        <div>
+          <strong>4.8</strong>
+          <span>客户复购评分</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section intro" aria-labelledby="intro-title">
+      <div class="section-heading">
+        <p class="eyebrow">Why LEAP</p>
+        <h2 id="intro-title">用咨询公司的结构化方法，处理地产公司的真实复杂度。</h2>
+      </div>
+      <p>立璞面向商业地产全周期，从前期定位、资产盘活、租户结构到资本退出，提供一套清晰、克制、可落地的咨询工作流。视觉语言采用 LEAP 粉色，表达敏捷增长、开放连接与高辨识度。</p>
+    </section>
+
+    <section class="section services-section" id="services" aria-labelledby="services-title">
+      <div class="section-heading">
+        <p class="eyebrow">Services</p>
+        <h2 id="services-title">三条服务线覆盖资产增长关键节点</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service-card" role="button" tabindex="0" data-service-id="advisory" aria-label="查看城市战略与资产咨询详情">
+          <span class="service-index">01</span>
+          <h3>城市战略与资产咨询</h3>
+          <p>定位城市板块机会，建立商业、办公、产业园与综合体的资产价值路线图。</p>
+          <span class="card-link">查看详情</span>
+        </article>
+        <article class="service-card" role="button" tabindex="0" data-service-id="capital" aria-label="查看资本市场与交易支持详情">
+          <span class="service-index">02</span>
+          <h3>资本市场与交易支持</h3>
+          <p>围绕收并购、更新改造、租金增长与退出假设，输出投资备忘录和决策模型。</p>
+          <span class="card-link">查看详情</span>
+        </article>
+        <article class="service-card" role="button" tabindex="0" data-service-id="workplace" aria-label="查看办公与品牌空间策略详情">
+          <span class="service-index">03</span>
+          <h3>办公与品牌空间策略</h3>
+          <p>为企业总部、联合办公、零售旗舰与展示中心设计更高效的空间组合。</p>
+          <span class="card-link">查看详情</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section insight-band" id="insights" aria-labelledby="insights-title">
+      <div>
+        <p class="eyebrow">Live Signal</p>
+        <h2 id="insights-title">反向代理 API 实时信号</h2>
+        <p>前端请求本机 Nginx 的 <code>/api</code> 路由，由 Nginx 代理到 GitHub 公共 API，模拟官网里的市场数据模块。</p>
+      </div>
+      <div class="signal" id="apiStatus" aria-live="polite">正在连接 /api 市场信号...</div>
+    </section>
+
+    <section class="section team-section" id="team" aria-labelledby="team-title">
+      <div class="section-heading">
+        <p class="eyebrow">Team</p>
+        <h2 id="team-title">小而强的顾问团队</h2>
+      </div>
+      <div class="team-grid">
+        <article class="person-card">
+          <div class="avatar">周</div>
+          <h3>周予安</h3>
+          <p>城市更新与商业定位负责人，曾参与核心商圈存量资产改造咨询。</p>
+        </article>
+        <article class="person-card">
+          <div class="avatar">林</div>
+          <h3>林清禾</h3>
+          <p>资本市场顾问，关注现金流重构、交易尽调与租户组合优化。</p>
+        </article>
+        <article class="person-card">
+          <div class="avatar">沈</div>
+          <h3>沈明璞</h3>
+          <p>企业空间策略顾问，为总部选址、品牌体验和办公效率提供方案。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact" aria-labelledby="contact-title">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-title">让下一处资产先被看清，再被放大。</h2>
+      </div>
+      <address>
+        <a href="mailto:hello@leap-advisory.example">hello@leap-advisory.example</a>
+        <span>上海市徐汇区衡山路 88 号 15F</span>
+        <span>+86 21 6000 2026</span>
+      </address>
+    </section>
+  </main>
+
+  <div class="modal" id="serviceModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-modal-close></div>
+    <section class="modal-card">
+      <button class="modal-close" id="modalClose" type="button" aria-label="关闭服务详情">×</button>
+      <p class="eyebrow">Service Detail</p>
+      <h2 id="modalTitle"></h2>
+      <p id="modalBody"></p>
+    </section>
+  </div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
