@@ -98,10 +98,19 @@
     <section class="section insight-band" id="insights" aria-labelledby="insights-title">
       <div>
         <p class="eyebrow">Live Signal</p>
-        <h2 id="insights-title">反向代理 API 实时信号</h2>
-        <p>前端请求本机 Nginx 的 <code>/api</code> 路由，由 Nginx 代理到 GitHub 公共 API，模拟官网里的市场数据模块。</p>
+        <h2 id="insights-title">城市数据与新闻雷达</h2>
+        <p>前端请求本机 Nginx 的 <code>/api/city</code> 与 <code>/api/news</code> 路由，由 Nginx 分别代理到 Open-Meteo 城市数据和 HN Algolia 新闻搜索，模拟咨询官网里的市场监测模块。</p>
       </div>
-      <div class="signal" id="apiStatus" aria-live="polite">正在连接 /api 市场信号...</div>
+      <div class="signal-grid">
+        <article class="signal">
+          <span>上海城市数据</span>
+          <strong id="cityDataStatus" aria-live="polite">正在连接 /api/city...</strong>
+        </article>
+        <article class="signal">
+          <span>城市更新新闻</span>
+          <strong id="newsStatus" aria-live="polite">正在连接 /api/news...</strong>
+        </article>
+      </div>
     </section>
 
     <section class="section team-section" id="team" aria-labelledby="team-title">
