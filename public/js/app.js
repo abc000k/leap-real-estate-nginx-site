@@ -85,19 +85,45 @@
     document.body.classList.remove('modal-open');
   }
 
-  async function loadMarketSignal(target, fetcher = window.fetch) {
+  const CITY_DATA_URL = '/api/city/forecast?latitude=31.2304&longitude=121.4737&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=Asia%2FShanghai';
+  const NEWS_URL = '/api/news/search?query=commercial%20real%20estate&tags=story&hitsPerPage=3';
+
+  async function loadCityData(target, fetcher = window.fetch) {
     if (!target || !fetcher) return;
-    target.textContent = '正在连接 /api 市场信号...';
+    target.textContent = '正在连接 /api/city 城市数据...';
 
     try {
-      const response = await fetcher('/api/repos/octocat/Hello-World');
-      if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+      const response = await fetcher(CITY_DATA_URL);
+      if (!response.ok) throw new Error(`Open-Meteo API ${response.status}`);
       const data = await response.json();
-      const stars = Number(data.stargazers_count || 0).toLocaleString('zh-CN');
-      const updated = data.updated_at ? new Date(data.updated_at).toLocaleDateString('zh-CN') : '未知日期';
-      target.textContent = `GitHub API 已通过 Nginx /api 返回：${data.full_name || 'octocat/Hello-World'}，关注度 ${stars}，最近更新 ${updated}。`;
+      const current = data.current || {};
+      const temperature = current.temperature_2m ?? '--';
+      const humidity = current.relative_humidity_2m ?? '--';
+      const wind = current.wind_speed_10m ?? '--';
+      target.textContent = `上海实时城市数据：气温 ${temperature}°C，湿度 ${humidity}%，风速 ${wind} km/h。`;
     } catch (error) {
-      target.textContent = '实时信号暂不可用，但 /api 反向代理配置已保留，可在 Nginx 环境中重试。';
+      target.textContent = '城市数据暂不可用，但 /api/city 反向代理配置已保留，可在 Nginx 环境中重试。';
+    }
+  }
+
+  async function loadNewsFeed(target, fetcher = window.fetch) {
+    if (!target || !fetcher) return;
+    target.textContent = '正在连接 /api/news 城市新闻...';
+
+    try {
+      const response = await fetcher(NEWS_URL);
+      if (!response.ok) throw new Error(`News API ${response.status}`);
+      const data = await response.json();
+      const hits = Array.isArray(data.hits) ? data.hits : [];
+      const titles = hits
+        .map((item) => item.title || item.story_title)
+        .filter(Boolean)
+        .slice(0, 2);
+      target.textContent = titles.length
+        ? `城市与地产新闻：${titles.join('；')}`
+        : '新闻接口已返回，但暂未检索到匹配的城市地产新闻。';
+    } catch (error) {
+      target.textContent = '城市新闻暂不可用，但 /api/news 反向代理配置已保留，可在 Nginx 环境中重试。';
     }
   }
 
@@ -145,7 +171,8 @@
 
     bindCards();
     bindModal();
-    loadMarketSignal(document.getElementById('apiStatus'));
+    loadCityData(document.getElementById('cityDataStatus'));
+    loadNewsFeed(document.getElementById('newsStatus'));
   }
 
   window.LeapApp = {
@@ -154,7 +181,8 @@
     typewriter,
     openServiceModal,
     closeServiceModal,
-    loadMarketSignal
+    loadCityData,
+    loadNewsFeed
   };
 
   document.addEventListener('DOMContentLoaded', init);
