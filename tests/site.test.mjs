@@ -66,7 +66,8 @@ function loadClientScript(script) {
     ['modalTitle', makeElement('modalTitle')],
     ['modalBody', makeElement('modalBody')],
     ['modalClose', makeElement('modalClose')],
-    ['apiStatus', makeElement('apiStatus')]
+    ['cityDataStatus', makeElement('cityDataStatus')],
+    ['newsStatus', makeElement('newsStatus')]
   ]);
   const cards = ['advisory', 'capital', 'workplace'].map((id) => {
     const card = makeElement(id);
@@ -83,14 +84,30 @@ function loadClientScript(script) {
     },
     clearTimeout() {},
     fetch: async (url) => {
-      context.fetchUrl = url;
+      context.fetchUrls.push(url);
+      const payload = url.includes('/api/city/')
+        ? {
+            current: {
+              temperature_2m: 27.4,
+              relative_humidity_2m: 68,
+              wind_speed_10m: 12.5
+            }
+          }
+        : {
+            hits: [
+              {
+                title: 'Shanghai office market tracks urban renewal demand',
+                url: 'https://example.com/shanghai-office-market'
+              },
+              {
+                title: 'Capital flows into mixed-use districts',
+                url: 'https://example.com/capital-flows'
+              }
+            ]
+          };
       return {
         ok: true,
-        json: async () => ({
-          full_name: 'octocat/Hello-World',
-          stargazers_count: 2800,
-          updated_at: '2026-01-02T03:04:05Z'
-        })
+        json: async () => payload
       };
     },
     localStorage: {
@@ -108,6 +125,7 @@ function loadClientScript(script) {
       }
     }
   };
+  context.fetchUrls = [];
   context.window = context;
   vm.createContext(context);
   vm.runInContext(script, context, { filename: 'public/js/app.js' });
@@ -123,18 +141,20 @@ test('homepage includes a polished LEAP real estate consulting structure', async
   assert.match(html, /js\/app\.js/);
   assert.equal([...html.matchAll(/data-service-id="/g)].length, 3);
   assert.match(html, /团队|联系|顾问/);
-  assert.match(html, /apiStatus/);
+  assert.match(html, /cityDataStatus/);
+  assert.match(html, /newsStatus/);
   assert.match(html, /assets\/leap-district\.webp/);
 });
 
-test('client script implements theme, typewriter, modal, and proxied API behavior', async () => {
+test('client script implements theme, typewriter, modal, city data, and news API behavior', async () => {
   const script = await readProjectFile('public', 'js', 'app.js');
   const { context, elements, cards, timers, storage } = loadClientScript(script);
 
   assert.equal(typeof context.window.LeapApp.setTheme, 'function');
   assert.equal(typeof context.window.LeapApp.typewriter, 'function');
   assert.equal(typeof context.window.LeapApp.openServiceModal, 'function');
-  assert.equal(typeof context.window.LeapApp.loadMarketSignal, 'function');
+  assert.equal(typeof context.window.LeapApp.loadCityData, 'function');
+  assert.equal(typeof context.window.LeapApp.loadNewsFeed, 'function');
 
   context.window.LeapApp.setTheme('dark');
   assert.equal(context.document.documentElement.dataset.theme, 'dark');
@@ -149,9 +169,12 @@ test('client script implements theme, typewriter, modal, and proxied API behavio
   assert.equal(elements.get('serviceModal').attributes['aria-hidden'], 'false');
   assert.match(elements.get('modalTitle').textContent, /战略|城市|咨询|资本|办公/);
 
-  await context.window.LeapApp.loadMarketSignal(elements.get('apiStatus'));
-  assert.equal(context.fetchUrl, '/api/repos/octocat/Hello-World');
-  assert.match(elements.get('apiStatus').textContent, /GitHub|2800|octocat/);
+  await context.window.LeapApp.loadCityData(elements.get('cityDataStatus'));
+  await context.window.LeapApp.loadNewsFeed(elements.get('newsStatus'));
+  assert.equal(context.fetchUrls[0], '/api/city/forecast?latitude=31.2304&longitude=121.4737&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=Asia%2FShanghai');
+  assert.equal(context.fetchUrls[1], '/api/news/search?query=commercial%20real%20estate&tags=story&hitsPerPage=3');
+  assert.match(elements.get('cityDataStatus').textContent, /27\.4|68|12\.5|上海/);
+  assert.match(elements.get('newsStatus').textContent, /Shanghai office market|Capital flows/);
 });
 
 test('nginx configuration serves static files, proxies /api, handles 404, and enables HTTPS', async () => {
@@ -159,9 +182,12 @@ test('nginx configuration serves static files, proxies /api, handles 404, and en
   assert.match(nginx, /listen\s+80;/);
   assert.match(nginx, /listen\s+443\s+ssl/);
   assert.match(nginx, /root\s+\/usr\/share\/nginx\/html;/);
-  assert.match(nginx, /location\s+\/api\//);
-  assert.match(nginx, /proxy_pass\s+https:\/\/api\.github\.com\//);
-  assert.match(nginx, /proxy_set_header\s+Host\s+api\.github\.com;/);
+  assert.match(nginx, /location\s+\/api\/city\//);
+  assert.match(nginx, /proxy_pass\s+https:\/\/api\.open-meteo\.com\/v1\//);
+  assert.match(nginx, /proxy_set_header\s+Host\s+api\.open-meteo\.com;/);
+  assert.match(nginx, /location\s+\/api\/news\//);
+  assert.match(nginx, /proxy_pass\s+https:\/\/hn\.algolia\.com\/api\/v1\//);
+  assert.match(nginx, /proxy_set_header\s+Host\s+hn\.algolia\.com;/);
   assert.match(nginx, /error_page\s+404\s+\/404\.html;/);
   assert.match(nginx, /try_files\s+\$uri\s+\$uri\/\s+=404;/);
   assert.match(nginx, /Cache-Control/);
