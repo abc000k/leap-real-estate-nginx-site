@@ -23,6 +23,20 @@ docker compose up --build
 
 浏览器会提示自签名证书不受信任，选择继续访问即可用于本地验收。
 
+## 运行截图
+
+亮色首页：
+
+![亮色首页](docs/screenshots/home-light.png)
+
+暗色首页：
+
+![暗色首页](docs/screenshots/home-dark.png)
+
+服务卡片与城市数据模块：
+
+![服务卡片与城市数据模块](docs/screenshots/services-data.png)
+
 ## 验证
 
 运行自动检查：
