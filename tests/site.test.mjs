@@ -137,8 +137,8 @@ test('homepage includes a polished LEAP real estate consulting structure', async
   assert.match(html, /立璞房产咨询有限公司/);
   assert.match(html, /id="slogan-typewriter"/);
   assert.match(html, /id="themeToggle"/);
-  assert.match(html, /public\/?css|css\/styles\.css/);
-  assert.match(html, /js\/app\.js/);
+  assert.match(html, /public\/?css|css\/styles\.css\?v=/);
+  assert.match(html, /js\/app\.js\?v=/);
   assert.equal([...html.matchAll(/data-service-id="/g)].length, 3);
   assert.match(html, /团队|联系|顾问/);
   assert.match(html, /cityDataStatus/);
